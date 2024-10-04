@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+    <display-name>SPRestDataBricks</display-name>
+    <session-config>
+        <session-timeout>
+            30
+        </session-timeout>
+    </session-config>
+    <context-param>
+        <param-name>proxy-server</param-name>
+        <param-value>https://yourserver.databricks.com/api/2.0/preview/scim/v2</param-value>
+    </context-param>
+    <context-param>
+        <param-name>proxy-server-clientid</param-name>
+        <param-value>clientid</param-value>
+    </context-param>
+    <servlet>
+        <servlet-name>jersey-serlvet</servlet-name>
+        <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
+        <init-param>
+            <param-name>jersey.config.server.provider.packages</param-name>
+            <param-value>tech.zephon.databricks.rest</param-value>
+        </init-param>
+        <!-- Basic Auth is not used
+        <init-param>
+            <param-name>javax.ws.rs.Application</param-name>
+            <param-value>tech.zephon.rest.context.MyApplication</param-value>
+        </init-param>
+         -->
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>jersey-serlvet</servlet-name>
+        <url-pattern>/rest/*</url-pattern>
+    </servlet-mapping>
+    <listener>
+        <listener-class>tech.zephon.databricks.rest.filter.CacheInitializer</listener-class>
+    </listener>
+    <welcome-file-list>
+        <welcome-file>index.html</welcome-file>
+    </welcome-file-list>
+</web-app>
